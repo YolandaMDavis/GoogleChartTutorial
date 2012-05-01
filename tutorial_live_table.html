@@ -1,0 +1,126 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html;UTF-8"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+<link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css"/>
+<link type="text/css" rel="stylesheet" href="jquery/jquery-bootstrap/jquery-ui-1.8.16.custom.css"/>
+<link type="text/css" rel="stylesheet" href="tutorial.css"/>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="jquery/jquery-ui-1.8.18.custom.min.js"></script>
+<script type="text/javascript" src="jquery/jquery.tools.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="tutorial.js"></script>
+
+<!--Javascript library api  for google-->
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<title>Google Chart API Tutorial</title>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">Google Chart API Tutorial </a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li><a href="tutorial_barchart.html">Basic Charts</a></li>
+			  <li><a href="tutorial_event_tableandcolumnchart.html">Events and Dashboards</a></li>
+              <li class="active"><a href="tutorial_live_table.html">Real Time Charts</a></li>              
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+</div>
+   
+ <div class="container">
+
+ <ul class="nav nav-tabs">	
+	<li class="active"> <a href="tutorial_live_piechart.html">Live Table Chart</a></li>	
+ </ul>
+ 
+ <script lang="javascript"> 
+var tableChart; 
+var gaugeChart;
+var refreshInterval = 10000;
+var counter = 0;
+var tweetNumber = 100;
+
+ function drawCharts(dataTable,gaugeTable){   
+    tableChart.clearChart(); 	
+	tableChart.draw(dataTable, {allowHtml: true, page: 'enable', pageSize: 10});
+	gaugeChart.draw(gaugeTable,  {width: 400, height: 120, redFrom: 90, redTo: 100,yellowFrom:75, yellowTo: 90,minorTicks: 5, animation:{duration: 400,easing: 'out'}});	
+ }
+ 
+function populateChart(data){	 
+	var dataTable = new google.visualization.DataTable();
+	dataTable.addColumn('string', 'Twitter User');
+	dataTable.addColumn('string', 'Tweet Text');
+	dataTable.addColumn('datetime', 'Tweet Date');	
+	
+	$.each(data.results,function(i,value){
+	  var link = 'https://twitter.com/#!/'+value.from_user+'/status/'+value.id_str;
+	  var htmlText = '<a href="'+link+'" target="_blank">'+value.text+'</a>';	  
+      dataTable.addRow([value.from_user,htmlText,new Date(value.created_at)]);	  
+	});	
+
+	var gaugeTable = google.visualization.arrayToDataTable([['Label', 'Value'],['Tweets', dataTable.getNumberOfRows()]]);		
+	drawCharts(dataTable,gaugeTable);
+}
+
+function getJsonData(){
+	var bcOpenDataUrl = 'http://search.twitter.com/search.json?q=BDPAConference&rpp='+tweetNumber+'&callback=populateChart';
+	var script = '<script type="text/javascript" src="'+bcOpenDataUrl+'"/>';	
+	$('head').append(script);                   
+}
+
+ function countDown(){	
+	if(counter == 0){
+		counter = refreshInterval/1000;
+		getJsonData();
+	}else{
+		counter--;
+	} 
+	$("#secondSpan").html(counter);
+ }
+ 
+ google.load('visualization', '1.0', {'packages':['table','gauge']});
+
+ $(function() { 		
+	tableChart = new google.visualization.Table(document.getElementById('tableChartDisplay')); 	
+	gaugeChart = new google.visualization.Gauge(document.getElementById('gaugeChartDisplay')); 	
+	setInterval("countDown()",1000);
+	$('#tweetNumber').html(tweetNumber);
+ });	
+ </script>
+ 
+<h3> Table refresh will occur in <span id="secondSpan"></span> second(s). </h3> 
+<br>
+<div id="tableChartDisplay"><h4><image src="images/ui-anim_basic_16x16.gif"/>Loading Tweet Results..</h4></div> 
+<br>
+<p>Goal Tweet Meter (Goal of <span id="tweetNumber"></span> BDPAConference Tweets):<p>
+<div id="gaugeChartDisplay"><image src="images/ui-anim_basic_16x16.gif"/>Preparing Results Meter...</div>
+<br>
+<p>
+See Code Below:
+</p>
+<pre>
+&lt;script lang=&quot;javascript&quot;&gt; <br/>var tableChart; <br/>var gaugeChart;<br/>var refreshInterval = 10000;<br/>var counter = 0;<br/>var tweetNumber = 100;<br/><br/> function drawCharts(dataTable,gaugeTable){   <br/>    tableChart.clearChart(); 	<br/>	tableChart.draw(dataTable, {allowHtml: true, page: 'enable', pageSize: 10});<br/>	gaugeChart.draw(gaugeTable,  {width: 400, height: 120, redFrom: 90, redTo: 100,yellowFrom:75, yellowTo: 90,minorTicks: 5, animation:{duration: 400,easing: 'out'}});	<br/> }<br/> <br/>function populateChart(data){	<br/> <br/>	var dataTable = new google.visualization.DataTable();<br/>	dataTable.addColumn('string', 'Twitter User');<br/>	dataTable.addColumn('string', 'Tweet Text');<br/>	dataTable.addColumn('datetime', 'Tweet Date');	<br/>	<br/>	$.each(data.results,function(i,value){<br/>	  var link = 'https://twitter.com/#!/'+value.from_user+'/status/'+value.id_str;<br/>	  var htmlText = '&lt;a href=&quot;'+link+'&quot; target=&quot;_blank&quot;&gt;'+value.text+'&lt;/a&gt;';	  <br/>      dataTable.addRow([value.from_user,htmlText,new Date(value.created_at)]);	  <br/>	});	<br/><br/>	var gaugeTable = google.visualization.arrayToDataTable([['Label', 'Value'],['Tweets', dataTable.getNumberOfRows()]]);		<br/>	drawCharts(dataTable,gaugeTable);<br/>}<br/><br/>function getJsonData(){<br/>	var bcOpenDataUrl = 'http://search.twitter.com/search.json?q=BDPAConference&amp;rpp='+tweetNumber+'&amp;callback=populateChart';<br/>	var script = '&lt;script type=&quot;text/javascript&quot; src=&quot;'+bcOpenDataUrl+'&quot;/&gt;';	<br/>	$('head').append(script);                   <br/>}<br/><br/> function countDown(){	<br/>	if(counter == 0){<br/>		counter = refreshInterval/1000;<br/>		getJsonData();<br/>	}else{<br/>		counter--;<br/>	} <br/>	$(&quot;#secondSpan&quot;).html(counter);<br/> }<br/> <br/> google.load('visualization', '1.0', {'packages':['table','gauge']});<br/><br/> $(function() { 		<br/>	tableChart = new google.visualization.Table(document.getElementById('tableChartDisplay')); 	<br/>	gaugeChart = new google.visualization.Gauge(document.getElementById('gaugeChartDisplay')); 	<br/>	setInterval(&quot;countDown()&quot;,1000);<br/>	$('#tweetNumber').html(tweetNumber);<br/> });	<br/> &lt;/script&gt;<br/> <br/>&lt;h3&gt; Table refresh will occur in &lt;span id=&quot;secondSpan&quot;&gt;&lt;/span&gt; second(s). &lt;/h3&gt; <br/>&lt;br&gt;<br/>&lt;div id=&quot;tableChartDisplay&quot;&gt;&lt;h4&gt;&lt;image src=&quot;images/ui-anim_basic_16x16.gif&quot;/&gt;Loading Tweet Results..&lt;/h4&gt;&lt;/div&gt; <br/>&lt;br&gt;<br/>&lt;p&gt;Goal Tweet Meter (Goal of &lt;span id=&quot;tweetNumber&quot;&gt;&lt;/span&gt; BDPAConference Tweets):&lt;p&gt;<br/>&lt;div id=&quot;gaugeChartDisplay&quot;&gt;&lt;image src=&quot;images/ui-anim_basic_16x16.gif&quot;/&gt;Preparing Results Meter...&lt;/div&gt;
+</pre> 
+</div>
+</body>
+</html>
