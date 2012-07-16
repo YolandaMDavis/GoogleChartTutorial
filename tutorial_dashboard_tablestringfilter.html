@@ -64,20 +64,13 @@ function drawDashboard(){
 		'chartType': 'Table',
 		'containerId': 'tableChartDisplay'});
 
-  var barChart = new google.visualization.ChartWrapper({
-		'chartType': 'BarChart',
-		'containerId': 'barChartDisplay',
-		'options': {width:900, height:300}});
-
-			
 	
 	var categoryFilter = new google.visualization.ControlWrapper({ 'controlType': 'CategoryFilter', 'containerId': 'categoryFilter',
     'options': {'filterColumnLabel': 'Favorite Cities','ui': {'allowTyping': false,'allowMultiple': true,'selectedValuesLayout': 'aside'}}
 	});	
 	
 	var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard'));
-	dashboard.bind(categoryFilter, table);
-	dashboard.bind(categoryFilter, barChart);
+	dashboard.bind(categoryFilter, table);	
     dashboard.draw(data);
 }
 
@@ -91,7 +84,6 @@ $(function() {
 	<br>
 	<div id="tableChartDisplay">Table</div> 
 	<br>
-	<div id="barChartDisplay">Bar</div>
 </div>
 <br>
 <br>

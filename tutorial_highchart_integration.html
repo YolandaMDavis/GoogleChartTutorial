@@ -109,20 +109,27 @@ function getDataTable(){
         ['Washington, D.C.', 8], 
         ['New York', 7],
         ['Dallas', 8]
-      ]);
-                        
+      ]);                        
       return data;
-
 }
 
     
 function drawChart() {    
-    var data = getDataTable();	
-	data.sort(1);
-	var view = new google.visualization.DataView(data)
-	view.hideRows(0,1);
-    var chart = new ymd.HighChartLine(document.getElementById('highChartDisplay'));
-    chart.draw(view, {title:'HighCharts Integration Chart'});
+
+    var chartContainer = document.getElementById('highChartDisplay');
+	try{
+	
+		var data = getDataTable();	
+		data.sort(1);
+		var view = new google.visualization.DataView(data)
+		view.hideRows(0,1);
+		var chart = new ymd.HighChartLine(chartContainer);
+		chart.draw(view, {title:'HighCharts Integration Chart'});
+		
+	}
+	catch(err){
+		google.visualization.errors.addError(chartContainer,"An error occured while rendering the chart", err.message, {'showInTooltip': false});
+	}
 }
 
 google.load("visualization", "1");
