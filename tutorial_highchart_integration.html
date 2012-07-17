@@ -97,22 +97,6 @@ function convertDataToArray(data, colIndex){
     return seriesArray;
                            
 }
-
-function getDataTable(){
-
-      var data = new google.visualization.DataTable();
-      data.addColumn('string', 'Favorite Cities');
-      data.addColumn('number', 'Rating');      
-      data.addRows([
-        ['Baltimore', 10],
-        ['Atlanta', 9],
-        ['Washington, D.C.', 8], 
-        ['New York', 7],
-        ['Dallas', 8]
-      ]);                        
-      return data;
-}
-
     
 function drawChart() {    
 
@@ -143,7 +127,7 @@ google.setOnLoadCallback(drawChart);
 See Code Below:
 </p>
 <pre>
-//creating a namespace<br/>var ymd = {};<br/><br/>ymd.HighChartLine = function(container) {<br/>  this.containerElement = container;<br/>}<br/>    <br/>ymd.HighChartLine.prototype.draw = function(data, options) {<br/><br/>   var chart = new Highcharts.Chart({<br/><br/>        chart: {<br/>            renderTo: this.containerElement.id,<br/>			type: 'column'<br/>        },<br/>		title: {<br/>			text: options.title			<br/>		},<br/>    <br/>        xAxis: {<br/>            categories: convertDataToArray(data,0),           <br/>        },<br/>    <br/>        series: [{<br/>            data:convertDataToArray(data,1)<br/>        }]<br/><br/>    }); <br/>    <br/>};<br/><br/>function convertDataToArray(data, colIndex){<br/><br/>    var seriesArray = new Array();<br/>    for (i = 0; i &lt; data.getNumberOfRows(); i++){			  	     	<br/>		  	seriesArray.push(data.getValue(i,colIndex));                		 <br/>    }                       <br/>    return seriesArray;<br/>                           <br/>}<br/><br/>function getDataTable(){<br/><br/>      var data = new google.visualization.DataTable();<br/>      data.addColumn('string', 'Favorite Cities');<br/>      data.addColumn('number', 'Rating');      <br/>      data.addRows([<br/>        ['Baltimore', 10],<br/>        ['Atlanta', 9],<br/>        ['Washington, D.C.', 8], <br/>        ['New York', 7],<br/>        ['Dallas', 8]<br/>      ]);                        <br/>      return data;<br/>}<br/><br/>    <br/>function drawChart() {    <br/><br/>    var chartContainer = document.getElementById('highChartDisplay');<br/>	try{<br/>	<br/>		var data = getDataTable();	<br/>		data.sort(1);<br/>		var view = new google.visualization.DataView(data)<br/>		view.hideRows(0,1);<br/>		var chart = new ymd.HighChartLine(chartContainer);<br/>		chart.draw(view, {title:'HighCharts Integration Chart'});<br/>		<br/>	}<br/>	catch(err){<br/>		google.visualization.errors.addError(chartContainer,&quot;An error occured while rendering the chart&quot;, err.message, {'showInTooltip': false});<br/>	}<br/>}<br/><br/>google.load(&quot;visualization&quot;, &quot;1&quot;);<br/>google.setOnLoadCallback(drawChart);<br/>
+//creating a namespace<br/>var ymd = {};<br/><br/>ymd.HighChartLine = function(container) {<br/>  this.containerElement = container;<br/>}<br/>    <br/>ymd.HighChartLine.prototype.draw = function(data, options) {<br/><br/>   var chart = new Highcharts.Chart({<br/><br/>        chart: {<br/>            renderTo: this.containerElement.id,<br/>			type: 'column'<br/>        },<br/>		title: {<br/>			text: options.title			<br/>		},<br/>    <br/>        xAxis: {<br/>            categories: convertDataToArray(data,0),           <br/>        },<br/>    <br/>        series: [{<br/>            data:convertDataToArray(data,1)<br/>        }]<br/><br/>    }); <br/>    <br/>};<br/><br/>function convertDataToArray(data, colIndex){<br/><br/>    var seriesArray = new Array();<br/>    for (i = 0; i &lt; data.getNumberOfRows(); i++){			  	     	<br/>		  	seriesArray.push(data.getValue(i,colIndex));                		 <br/>    }                       <br/>    return seriesArray;<br/>                           <br/>}<br/><br/>    <br/>function drawChart() {    <br/><br/>    var chartContainer = document.getElementById('highChartDisplay');<br/>	try{<br/>	<br/>		var data = getDataTable();	<br/>		data.sort(1);<br/>		var view = new google.visualization.DataView(data)<br/>		view.hideRows(0,1);<br/>		var chart = new ymd.HighChartLine(chartContainer);<br/>		chart.draw(view, {title:'HighCharts Integration Chart'});<br/>		<br/>	}<br/>	catch(err){<br/>		google.visualization.errors.addError(chartContainer,&quot;An error occured while rendering the chart&quot;, err.message, {'showInTooltip': false});<br/>	}<br/>}<br/><br/>google.load(&quot;visualization&quot;, &quot;1&quot;);<br/>google.setOnLoadCallback(drawChart);<br/>
 </pre> 
 </div>
 </body>
