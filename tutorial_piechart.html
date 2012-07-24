@@ -16,6 +16,9 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="tutorial.js"></script>
+<link type="text/css" rel="stylesheet" href="google-code-prettify/prettify.css" />
+<script type="text/javascript" src="google-code-prettify/prettify.js"></script>
+
 <!--Javascript library api  for google-->
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <title>Google Chart API Tutorial</title>
@@ -62,25 +65,25 @@
 	chart.draw(data, options);
  }
 
- $(function() {drawChart();});
+ $(function() {drawChart();prettyPrint()});
 	
  </script>
  
 <div id="chartDisplay">Pie Chart</div> 
 <p>
-See Code Below:
+<strong>Chart Code:</strong>
 </p>
-<pre>
-google.load('visualization', '1.0', {'packages':['corechart']});
+<pre class="prettyprint linenums">
 
-function drawChart(){
-	var data = getDataTable();
-	var options = {title: 'Yolanda\'s Favorite Cities', height: '300'};
-	var chart = new google.visualization.PieChart(document.getElementById('chartDisplay'));
-	chart.draw(data, options);
-}
+	google.load('visualization', '1.0', {'packages':['corechart']});
 
-$(function() {drawChart();});
+	function drawChart(){
+		var data = getDataTable();
+		var options = {title: 'Yolanda\'s Favorite Cities', height: '300'};
+		var chart = new google.visualization.PieChart(document.getElementById('chartDisplay'));
+		chart.draw(data, options);
+	}
+
 </pre>
 </div>
 </body>

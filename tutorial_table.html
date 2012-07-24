@@ -16,6 +16,8 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="tutorial.js"></script>
+<link type="text/css" rel="stylesheet" href="google-code-prettify/prettify.css" />
+<script type="text/javascript" src="google-code-prettify/prettify.js"></script>
 <!--Javascript library api  for google-->
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <title>Google Chart API Tutorial</title>
@@ -61,25 +63,25 @@
 	chart.draw(data, null);
  }
 
- $(function() {drawChart();});
+ $(function() {drawChart();prettyPrint();});
 	
  </script>
  
 <div id="chartDisplay">Table</div>
 <br>
 <p>
-See Code Below:
+<strong>Chart Code:</strong>
 </p>
-<pre>
-google.load('visualization', '1.0', {'packages':['table']});
+<pre class="prettyprint linenums">
 
-function drawChart(){
-	var data = getDataTable();	
-	var chart = new google.visualization.Table(document.getElementById('chartDisplay'));
-	chart.draw(data, null);
-}
+	google.load('visualization', '1.0', {'packages':['table']});
 
-$(function() {drawChart();});	
+	function drawChart(){
+		var data = getDataTable();	
+		var chart = new google.visualization.Table(document.getElementById('chartDisplay'));
+		chart.draw(data, null);
+	}
+
 </pre> 
 
 </div>

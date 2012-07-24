@@ -58,26 +58,28 @@
  google.load('visualization', '1.0', {'packages':['corechart','table']});
  
 function drawCharts(){
-	var data = getDataTable();
-	var options = {title: 'Yolanda\'s Favorite Cities', height: '300'};
+	var data = getXYDataTable();
+	var options = {title: 'Yolanda\'s Favorite Cities', height: '500'};
 	
-	var barChart = new google.visualization.BarChart(document.getElementById('barChartDisplay'));
+	var bubbleChart = new google.visualization.BubbleChart(document.getElementById('bubbleChartDisplay'));
 	var table = new google.visualization.Table(document.getElementById('tableChartDisplay'));
-	
-	table.draw(data, null);
-	barChart.draw(data, options);
-	
+		
 	google.visualization.events.addListener(table, 'select',function(e) {
-		 barChart.setSelection(table.getSelection());		 
+		 bubbleChart.setSelection(table.getSelection());		 
 	});
 		
-	google.visualization.events.addListener(barChart, 'select',function(e) {
-		var selection = barChart.getSelection();
-		var dataValue = data.getValue(selection[0].row, selection[0].column);
-		var cityValue = data.getValue(selection[0].row, selection[0].column - 1);
-		$("#chartMessage").html("The city of " + cityValue + " received a rating of " + dataValue + " out of 10");
-		$("#chartMessage").dialog("open");		
+	google.visualization.events.addListener(bubbleChart, 'select',function(e) {
+		var selection = bubbleChart.getSelection();
+		if( selection != null && selection.length > 0){
+			table.getSelection(selection);
+			$("#chartMessage").html("Row number "+ selection[0].row + " was selected in the data table!");
+			$("#chartMessage").dialog("open");		
+		}
 	});
+	
+	table.draw(data, null);
+	bubbleChart.draw(data, options);
+	
 		
 }
 
@@ -99,55 +101,40 @@ $(function() {
  </script>
  
 <div id="chartMessage" class="hide" title="Chart Clicked!"> </div>
-<div id="barChartDisplay">Bar Chart</div>
-<br> 
+<div id="bubbleChartDisplay">Bar Chart</div> 
 <div id="tableChartDisplay">Table</div> 
 <br>
-<br>
 <p>
-See Code Below:
+<strong>Chart Code:</strong>
 </p>
 <pre>
 google.load('visualization', '1.0', {'packages':['corechart','table']});
  
 function drawCharts(){
-	var data = getDataTable();
-	var options = {title: 'Yolanda\'s Favorite Cities', height: '300'};
+	var data = getXYDataTable();
+	var options = {title: 'Yolanda\'s Favorite Cities', height: '500'};
 	
-	var barChart = new google.visualization.BarChart(document.getElementById('barChartDisplay'));
+	var bubbleChart = new google.visualization.BubbleChart(document.getElementById('bubbleChartDisplay'));
 	var table = new google.visualization.Table(document.getElementById('tableChartDisplay'));
+		
+	google.visualization.events.addListener(table, 'select',function(e) {
+		 bubbleChart.setSelection(table.getSelection());		 
+	});
+		
+	google.visualization.events.addListener(bubbleChart, 'select',function(e) {
+		var selection = bubbleChart.getSelection();
+		if( selection != null && selection.length > 0){
+			table.getSelection(selection);
+			$("#chartMessage").html("Row number "+ selection[0].row + " was selected in the data table!");
+			$("#chartMessage").dialog("open");		
+		}
+	});
 	
 	table.draw(data, null);
-	barChart.draw(data, options);
+	bubbleChart.draw(data, options);
 	
-	google.visualization.events.addListener(table, 'select',function(e) {
-		 barChart.setSelection(table.getSelection());		 
-	});
-		
-	google.visualization.events.addListener(barChart, 'select',function(e) {
-		var selection = barChart.getSelection();
-		var dataValue = data.getValue(selection[0].row, selection[0].column);
-		var cityValue = data.getValue(selection[0].row, selection[0].column - 1);
-		$("#chartMessage").html("The city of " + cityValue + " received a rating of " + dataValue + " out of 10");
-		$("#chartMessage").dialog("open");		
-	});
-		
+	
 }
-
-$(function() {
-
-	$("#chartMessage" ).dialog({
-			modal: true,
-			autoOpen: false,
-			buttons: {
-				Ok: function() {
-					$( this ).dialog( "close" );
-				}
-			}
-		});
-	
-	drawCharts();
-});
 
 </pre>
 

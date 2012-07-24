@@ -20,6 +20,8 @@
 <script type="text/javascript" src="jquery/jquery.tools.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="tutorial.js"></script>
+<link type="text/css" rel="stylesheet" href="google-code-prettify/prettify.css" />
+<script type="text/javascript" src="google-code-prettify/prettify.js"></script>
 
 <!--Javascript library api  for google-->
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -59,66 +61,57 @@
  
 function drawDashboard(){
 	var data = getDataTable();	
-	
-	var table = new google.visualization.ChartWrapper({
-		'chartType': 'Table',
-		'containerId': 'tableChartDisplay'});
-
-	var barChart = new google.visualization.ChartWrapper({
-		'chartType': 'BarChart',
-		'containerId': 'barChartDisplay',
-		'options': {width:900,height:300}});
-		
+			
+	var geoChart = new google.visualization.ChartWrapper({
+		'chartType': 'GeoChart',
+		'containerId': 'geoChartDisplay',
+		'options':{magnifyingGlass:{enable:true},region:'US',  displayMode: 'markers', colorAxis: {colors: ['red', 'blue']}}});
+				 
 	var categoryFilter = new google.visualization.ControlWrapper({ 'controlType': 'CategoryFilter', 'containerId': 'categoryFilter',
     'options': {'filterColumnLabel': 'Favorite Cities','ui': {'allowTyping': false,'allowMultiple': true,'selectedValuesLayout': 'aside'}}
 	});	
 	
 	var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard'));
-	dashboard.bind(categoryFilter, table);	
-	dashboard.bind(categoryFilter, barChart);	
+
+	dashboard.bind(categoryFilter, geoChart);		
     dashboard.draw(data);
 }
 
 $(function() {	
 	drawDashboard();
+	prettyPrint();
 });	
  </script>
  
 <div id="dashboard">
-	<div id="categoryFilter">Category Filter</div>
+	<div id="categoryFilter">Category Filter</div>	
 	<br>
-	<div id="tableChartDisplay">Table</div> 
-	<br>
-	<div id="barChartDisplay">Table</div> 
+	<div id="geoChartDisplay"></div> 
 </div>
 <br>
 <br>
 <p>
-See Code Below:
+<strong>Chart Code:</strong>
 </p>
-<pre>
-google.load('visualization', '1.0', {'packages':['controls']});
- 
-function drawDashboard(){
-	var data = getDataTable();	
-	
-	var table = new google.visualization.ChartWrapper({
-		'chartType': 'Table',
-		'containerId': 'tableChartDisplay'});
-	
-	var categoryFilter = new google.visualization.ControlWrapper({ 'controlType': 'CategoryFilter', 'containerId': 'categoryFilter',
-    'options': {'filterColumnLabel': 'Favorite Cities','ui': {'allowTyping': false,'allowMultiple': true,'selectedValuesLayout': 'aside'}}
-	});	
-	
-	var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard'));
-	dashboard.bind(categoryFilter, table);
-    dashboard.draw(data);
-}
-
-$(function() {	
-	drawDashboard();
-});
-
+<pre class="prettyprint linenums">
+	google.load('visualization', '1.0', {'packages':['controls']});
+	 
+	function drawDashboard(){
+		var data = getDataTable();	
+				
+		var geoChart = new google.visualization.ChartWrapper({
+			'chartType': 'GeoChart',
+			'containerId': 'geoChartDisplay',
+			'options':{title: 'Yolanda\'s Favorite Cities',region:'US',  displayMode: 'markers', colorAxis: {colors: ['red', 'blue']}}});
+					 
+		var categoryFilter = new google.visualization.ControlWrapper({ 'controlType': 'CategoryFilter', 'containerId': 'categoryFilter',
+		'options': {'filterColumnLabel': 'Favorite Cities','ui': {'allowTyping': false,'allowMultiple': true,'selectedValuesLayout': 'aside'}}
+		});	
+		
+		var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard'));
+		dashboard.bind(categoryFilter, geoChart);		
+		dashboard.draw(data);
+	}
 </pre>
 
  

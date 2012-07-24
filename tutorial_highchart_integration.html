@@ -56,63 +56,29 @@
  </ul>
  
  <script lang="javascript"> 
- 
- //creating a namespace
-var ymd = {};
-
-ymd.HighChartLine = function(container) {
-  this.containerElement = container;
-}
-    
-ymd.HighChartLine.prototype.draw = function(data, options) {
-
-   var chart = new Highcharts.Chart({
-
-        chart: {
-            renderTo: this.containerElement.id,
-			type: 'column'
-        },
-		title: {
-			text: options.title			
-		},
-    
-        xAxis: {
-            categories: convertDataToArray(data,0),           
-        },
-    
-        series: [{
-            data:convertDataToArray(data,1)
-        }]
-
-    }); 
-    
-};
-
-function convertDataToArray(data, colIndex){
-
-    var seriesArray = new Array();
-    for (i = 0; i < data.getNumberOfRows(); i++){			  	     	
-		  	seriesArray.push(data.getValue(i,colIndex));                		 
-    }                       
-    return seriesArray;
-                           
-}
-    
+   
 function drawChart() {    
 
-    var chartContainer = document.getElementById('highChartDisplay');
-	try{
+    var columnChartContainer = document.getElementById('highColumnChartDisplay');
+	var pieChartContainer = document.getElementById('highPieChartDisplay');
+	var comboChartContainer = document.getElementById('highComboChartDisplay');		
+	var data = getDataTable();	
+	data.sort(1);
+	var view = new google.visualization.DataView(data)
+	view.hideRows(0,1);
 	
-		var data = getDataTable();	
-		data.sort(1);
-		var view = new google.visualization.DataView(data)
-		view.hideRows(0,1);
-		var chart = new ymd.HighChartLine(chartContainer);
-		chart.draw(view, {title:'HighCharts Integration Chart'});
-		
+	var dataMultiSeries = getAverageDataTable();
+	
+	try{	
+		var columnChart = new ymd.HighColumnChart(columnChartContainer);
+		columnChart.draw(view, {title:'HighCharts Column Integration Chart'});		
+		var pieChart = new ymd.HighPieChart(pieChartContainer);		
+		pieChart.draw(view, {title:'HighCharts Pie Integration Chart'});		
+		var comboChart = new ymd.HighComboChart(comboChartContainer);
+		comboChart.draw(dataMultiSeries,{title:'HighCharts Combo Integration Chart'});
 	}
 	catch(err){
-		google.visualization.errors.addError(chartContainer,"An error occured while rendering the chart", err.message, {'showInTooltip': false});
+		google.visualization.errors.addError(errorContainer,"An error occured while rendering the chart", err.message, {'showInTooltip': false});
 	}
 }
 
@@ -120,15 +86,14 @@ google.load("visualization", "1");
 google.setOnLoadCallback(drawChart);
 
  </script>
- 
-<div id="highChartDisplay">HighChart</div>
+
+<div id="errorContainer"></div> 
+<div id="highComboChartDisplay">ComboChart</div>
+<div class="row">
+<div class="span6" id="highColumnChartDisplay">HighChart</div>
+<div class="span6" id="highPieChartDisplay">PieChart</div>
+</div>
 <br>
-<p>
-See Code Below:
-</p>
-<pre>
-//creating a namespace<br/>var ymd = {};<br/><br/>ymd.HighChartLine = function(container) {<br/>  this.containerElement = container;<br/>}<br/>    <br/>ymd.HighChartLine.prototype.draw = function(data, options) {<br/><br/>   var chart = new Highcharts.Chart({<br/><br/>        chart: {<br/>            renderTo: this.containerElement.id,<br/>			type: 'column'<br/>        },<br/>		title: {<br/>			text: options.title			<br/>		},<br/>    <br/>        xAxis: {<br/>            categories: convertDataToArray(data,0),           <br/>        },<br/>    <br/>        series: [{<br/>            data:convertDataToArray(data,1)<br/>        }]<br/><br/>    }); <br/>    <br/>};<br/><br/>function convertDataToArray(data, colIndex){<br/><br/>    var seriesArray = new Array();<br/>    for (i = 0; i &lt; data.getNumberOfRows(); i++){			  	     	<br/>		  	seriesArray.push(data.getValue(i,colIndex));                		 <br/>    }                       <br/>    return seriesArray;<br/>                           <br/>}<br/><br/>    <br/>function drawChart() {    <br/><br/>    var chartContainer = document.getElementById('highChartDisplay');<br/>	try{<br/>	<br/>		var data = getDataTable();	<br/>		data.sort(1);<br/>		var view = new google.visualization.DataView(data)<br/>		view.hideRows(0,1);<br/>		var chart = new ymd.HighChartLine(chartContainer);<br/>		chart.draw(view, {title:'HighCharts Integration Chart'});<br/>		<br/>	}<br/>	catch(err){<br/>		google.visualization.errors.addError(chartContainer,&quot;An error occured while rendering the chart&quot;, err.message, {'showInTooltip': false});<br/>	}<br/>}<br/><br/>google.load(&quot;visualization&quot;, &quot;1&quot;);<br/>google.setOnLoadCallback(drawChart);<br/>
-</pre> 
 </div>
 </body>
 </html>
