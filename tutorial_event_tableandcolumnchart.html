@@ -20,6 +20,8 @@
 <script type="text/javascript" src="jquery/jquery.tools.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="tutorial.js"></script>
+<link type="text/css" rel="stylesheet" href="google-code-prettify/prettify.css" />
+<script type="text/javascript" src="google-code-prettify/prettify.js"></script>
 
 <!--Javascript library api  for google-->
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -64,8 +66,8 @@ function drawCharts(){
 	var bubbleChart = new google.visualization.BubbleChart(document.getElementById('bubbleChartDisplay'));
 	var table = new google.visualization.Table(document.getElementById('tableChartDisplay'));
 		
-	google.visualization.events.addListener(table, 'select',function(e) {
-		 bubbleChart.setSelection(table.getSelection());		 
+	google.visualization.events.addListener(table, 'select',function(e) {		 
+		 bubbleChart.setSelection(table.getSelection());			 
 	});
 		
 	google.visualization.events.addListener(bubbleChart, 'select',function(e) {
@@ -75,12 +77,18 @@ function drawCharts(){
 			$("#chartMessage").html("Row number "+ selection[0].row + " was selected in the data table!");
 			$("#chartMessage").dialog("open");		
 		}
+		
 	});
+	
+	//Format Number columns
+	var formatter = new google.visualization.NumberFormat({pattern:'#,###'});
+	formatter.format(data,1);
+	formatter.format(data,2);
+	formatter.format(data,3);
 	
 	table.draw(data, null);
 	bubbleChart.draw(data, options);
-	
-		
+			
 }
 
 $(function() {
@@ -96,6 +104,7 @@ $(function() {
 		});
 	
 	drawCharts();
+	prettyPrint();
 });
 	
  </script>
@@ -107,33 +116,32 @@ $(function() {
 <p>
 <strong>Chart Code:</strong>
 </p>
-<pre>
-google.load('visualization', '1.0', {'packages':['corechart','table']});
- 
-function drawCharts(){
-	var data = getXYDataTable();
-	var options = {title: 'Yolanda\'s Favorite Cities', height: '500'};
-	
-	var bubbleChart = new google.visualization.BubbleChart(document.getElementById('bubbleChartDisplay'));
-	var table = new google.visualization.Table(document.getElementById('tableChartDisplay'));
+<pre class="prettyprint linenums">
+	google.load('visualization', '1.0', {'packages':['corechart','table']});
+	 
+	function drawCharts(){
+		var data = getXYDataTable();
+		var options = {title: 'Yolanda\'s Favorite Cities', height: '500'};
 		
-	google.visualization.events.addListener(table, 'select',function(e) {
-		 bubbleChart.setSelection(table.getSelection());		 
-	});
+		var bubbleChart = new google.visualization.BubbleChart(document.getElementById('bubbleChartDisplay'));
+		var table = new google.visualization.Table(document.getElementById('tableChartDisplay'));
+			
+		google.visualization.events.addListener(table, 'select',function(e) {
+			 bubbleChart.setSelection(table.getSelection());		 
+		});
+			
+		google.visualization.events.addListener(bubbleChart, 'select',function(e) {
+			var selection = bubbleChart.getSelection();		
+			......					
+		});
+		//Format Number columns
+		var formatter = new google.visualization.NumberFormat({pattern:'#,###'});
+		formatter.format(data,1);
+		formatter.format(data,2);
+		formatter.format(data,3);
 		
-	google.visualization.events.addListener(bubbleChart, 'select',function(e) {
-		var selection = bubbleChart.getSelection();
-		if( selection != null && selection.length > 0){
-			table.getSelection(selection);
-			$("#chartMessage").html("Row number "+ selection[0].row + " was selected in the data table!");
-			$("#chartMessage").dialog("open");		
-		}
-	});
-	
-	table.draw(data, null);
-	bubbleChart.draw(data, options);
-	
-	
+		table.draw(data, null);
+		bubbleChart.draw(data, options);					
 }
 
 </pre>
