@@ -67,13 +67,13 @@ function drawDashboard(){
 		'containerId': 'geoChartDisplay',
 		'options':{magnifyingGlass:{enable:true},region:'US',  displayMode: 'markers', colorAxis: {colors: ['red', 'blue']}}});
 				 
-	var categoryFilter = new google.visualization.ControlWrapper({ 'controlType': 'CategoryFilter', 'containerId': 'categoryFilter',
+	var cityFilter = new google.visualization.ControlWrapper({ 'controlType': 'CategoryFilter', 'containerId': 'cityFilter',
     'options': {'filterColumnLabel': 'Favorite Cities','ui': {'allowTyping': false,'allowMultiple': true,'selectedValuesLayout': 'aside'}}
 	});	
 	
 	var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard'));
 
-	dashboard.bind(categoryFilter, geoChart);		
+	dashboard.bind(cityFilter, geoChart);		
     dashboard.draw(data);
 }
 
@@ -84,7 +84,7 @@ $(function() {
  </script>
  
 <div id="dashboard">
-	<div id="categoryFilter">Category Filter</div>	
+	<div id="cityFilter">City Filter</div>	
 	<br>
 	<div id="geoChartDisplay"></div> 
 </div>
@@ -104,7 +104,7 @@ $(function() {
 			'containerId': 'geoChartDisplay',
 			'options':{title: 'Yolanda\'s Favorite Cities',region:'US',  displayMode: 'markers', colorAxis: {colors: ['red', 'blue']}}});
 					 
-		var categoryFilter = new google.visualization.ControlWrapper({ 'controlType': 'CategoryFilter', 'containerId': 'categoryFilter',
+		var cityFilter = new google.visualization.ControlWrapper({ 'controlType': 'CategoryFilter', 'containerId': 'cityFilter',
 		'options': {'filterColumnLabel': 'Favorite Cities','ui': {'allowTyping': false,'allowMultiple': true,'selectedValuesLayout': 'aside'}}
 		});	
 		

@@ -59,6 +59,7 @@
  <script lang="javascript"> 
 var tableChart; 
 var gaugeChart;
+var geoChart;
 var refreshInterval = 10000;
 var counter = 0;
 var tweetNumber = 100;
@@ -113,17 +114,27 @@ function getJsonData(){
  });	
  </script>
  
-<h3> Table refresh will occur in <span id="secondSpan"></span> second(s). </h3> 
-<br>
+ <style>
+ .right{
+	text-align :right;
+ }
+ 
+ .left{
+	text-align :left;
+ }
+ </style>
+ 
+
+ <div class="left">
+	<div id="gaugeChartDisplay"><image src="images/ui-anim_basic_16x16.gif"/>Preparing Results Meter...</div>
+ </div>
+<BR> 
+<h3> Data refresh will occur in <span id="secondSpan"></span> second(s). </h3> 	 
 <div id="tableChartDisplay"><h4><image src="images/ui-anim_basic_16x16.gif"/>Loading Tweet Results..</h4></div> 
-<br>
-<p>Goal Tweet Meter (Goal of <span id="tweetNumber"></span> GoogleChartAPI Tweets):<p>
-<div id="gaugeChartDisplay"><image src="images/ui-anim_basic_16x16.gif"/>Preparing Results Meter...</div>
 <br>
 <p>
 <strong>Chart Code:</strong>
 </p>
-
 <pre class="prettyprint">
 
 	google.load('visualization', '1.0', {'packages':['table','gauge']});
